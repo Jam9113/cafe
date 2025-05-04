@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Account - Dear Café CDO</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #000;
+      padding: 10px 20px;
+      color: #fff;
+    }
+
+    .navbar .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .navbar .menu a {
+      color: #fff;
+      text-decoration: none;
+      margin-right: 15px;
+      font-size: 16px;
+    }
+
+    .account-section {
+      padding: 40px;
+      text-align: center;
+    }
+
+    .account-info, .orders {
+      max-width: 600px;
+      margin: 0 auto 40px;
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: left;
+    }
+
+    .account-info p {
+      margin-bottom: 15px;
+    }
+
+    .orders h2 {
+      margin-bottom: 20px;
+    }
+
+    .order {
+      border-bottom: 1px solid #ddd;
+      padding: 15px 0;
+    }
+
+    .order:last-child {
+      border-bottom: none;
+    }
+
+    .order p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">Dear Café CDO</div>
+    <div class="menu">
+      <a href="index.html">Home</a>
+      <a href="meeee.html">My Account</a>
+    </div>
+  </div>
+
+  <div class="account-section">
+    <h1>My Account</h1>
+    <form id="accountForm">
+        <label><strong>Name:</strong></label>
+        <input type="text" id="name" required><br><br>
+      
+        <label><strong>Email:</strong></label>
+        <input type="email" id="email" required readonly><br><br>
+      
+        <label><strong>Phone:</strong></label>
+        <input type="text" id="phone" required><br><br>
+      
+        <label><strong>Address:</strong></label>
+        <input type="text" id="address" required><br><br>
+      
+        <button type="submit">Save Changes</button>
+      </form>
+       
+  </div>
+
+  <div class="account-section">
+    <h1>My Orders</h1>
+    <div class="orders">
+      <h2>Order History</h2>
+
+      <div class="order">
+        <p><strong>Order ID:</strong> #00123</p>
+        <p><strong>Date:</strong> May 1, 2025</p>
+        <p><strong>Items:</strong> Spaghetti x1, Nachos x2</p>
+        <p><strong>Total:</strong> P350</p>
+        <p><strong>Status:</strong> Delivered</p>
+      </div>
+
+      <div class="order">
+        <p><strong>Order ID:</strong> #00115</p>
+        <p><strong>Date:</strong> April 25, 2025</p>
+        <p><strong>Items:</strong> Iced Coffee x3</p>
+        <p><strong>Total:</strong> P135</p>
+        <p><strong>Status:</strong> In Progress</p>
+      </div>
+
+    </div>
+  </div>
+  <script>
+    const email = 'juan@example.com'; // Replace with dynamic session-based email later
+  
+    // Load user info on page load
+    fetch(`http://localhost:5000/get-user/${email}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!data.error) {
+          document.getElementById("name").value = data.name || "";
+          document.getElementById("email").value = data.email || "";
+          document.getElementById("phone").value = data.phone || "";
+          document.getElementById("address").value = data.address || "";
+        }
+      });
+  
+    // Handle update
+    document.getElementById("accountForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const payload = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        address: document.getElementById("address").value,
+      };
+  
+      fetch("http://localhost:5000/update-user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) alert("Profile updated!");
+        else alert("Failed to update profile.");
+      });
+    });
+  </script>
+  
+</body>
+</html>
+

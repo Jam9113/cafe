@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dear Café CDO</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #000;
+      padding: 10px 20px;
+      color: #fff;
+    }
+
+    .navbar .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .navbar .menu {
+      display: flex;
+      gap: 20px;
+    }
+
+    .navbar .menu a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .navbar .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .navbar .Cart, .navbar .logout {
+      background-color: #32cd32;
+      color: #fff;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .navbar .Cart:hover, .navbar .logout:hover {
+      background-color: #28a428;
+    }
+
+    .menu-section {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .menu-section h1 {
+      margin-bottom: 20px;
+    }
+
+    .products {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .product-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      width: 200px;
+      text-align: center;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .product-card h3 {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    .product-card p {
+      font-size: 16px;
+      color: #555;
+    }
+
+    .product-card button {
+      background-color: #000;
+      color: #fff;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .product-card button:hover {
+      background-color: #444;
+    }
+
+    .cart-section {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px 10px 0 0;
+      width: 300px;
+      max-height: 400px;
+      overflow-y: auto;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+
+    .cart-header {
+      background-color: #000;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .cart-items {
+      padding: 10px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .cart-item button {
+      background-color: #ff0000;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .cart-item button:hover {
+      background-color: #cc0000;
+    }
+
+    .cart-footer {
+      padding: 10px;
+      text-align: center;
+    }
+
+    .cart-footer button {
+      background-color: #32cd32;
+      color: #fff;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .cart-footer button:hover {
+      background-color: #28a428;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="logo">Dear Café CDO</div>
+    <div class="menu">
+      <a href="#">Best Sellers</a>
+      <a href="#">Menu</a>
+      <a href="meeee.html">My Profile</a>
+    </div>
+    <div class="buttons">
+      <button class="Cart" onclick="toggleCart()">Brown Bag Cart</button>
+      <button class="logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <h1>BEST SELLING PRODUCTS</h1>
+    <div class="products">
+      <div class="product-card">
+        <img src="https://via.placeholder.com/150" alt="Spaghetti">
+        <h3>SPAGHETTI</h3>
+        <p>P150</p>
+        <button onclick="addToCart('Spaghetti', 150)">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://via.placeholder.com/150" alt="Nachos">
+        <h3>NACHOS</h3>
+        <p>P100</p>
+        <button onclick="addToCart('Nachos', 100)">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://via.placeholder.com/150" alt="Iced Coffee">
+        <h3>ICED COFFEE</h3>
+        <p>P45</p>
+        <button onclick="addToCart('Iced Coffee', 45)">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="menu-section">
+      <h1>MENU Pricelist</h1>
+      <img src="menu1.jpg" alt="Menu" style="width: 500px;" height="520px">
+    </div>
+  </div>
+
+  <div class="cart-section" id="cartSection">
+    <div class="cart-header">
+      <h2>Brown Bag Cart</h2>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <button onclick="checkout()">Checkout</button>
+    </div>
+  </div>
+
+  <script>
+    const cart = [];
+
+    function addToCart(productName, productPrice) {
+      const existing = cart.find(item => item.name === productName);
+      if (existing) {
+        existing.quantity++;
+      } else {
+        cart.push({ name: productName, price: productPrice, quantity: 1 });
+      }
+      renderCart();
+    }
+
+    function removeFromCart(productName) {
+      const index = cart.findIndex(item => item.name === productName);
+      if (index > -1) cart.splice(index, 1);
+      renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartItems');
+      container.innerHTML = '';
+      cart.forEach(item => {
+        container.innerHTML += `
+          <div class="cart-item">
+            <span>${item.name} x ${item.quantity}</span>
+            <span>P${item.price * item.quantity}</span>
+            <button onclick="removeFromCart('${item.name}')">Remove</button>
+          </div>
+        `;
+      });
+    }
+
+    function toggleCart() {
+      const section = document.getElementById('cartSection');
+      section.style.display = section.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+      }
+
+      const customerName = prompt('Enter your name for the order:');
+      if (!customerName) return;
+
+      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+      fetch('http://localhost:3000/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customerName, items: cart, total })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(`Order placed! ID: ${data.orderId}`);
+        cart.length = 0;
+        renderCart();
+        toggleCart();
+      })
+      .catch(err => {
+        console.error('Checkout error:', err);
+        alert('Something went wrong.');
+      });
+    }
+
+    function logout() {
+      alert('You have been logged out!');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>
